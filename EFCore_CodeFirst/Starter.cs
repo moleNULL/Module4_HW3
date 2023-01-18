@@ -7,15 +7,22 @@ namespace EFCore_CodeFirst
     {
         public static void Run()
         {
-            var options = GetDbOptions();
+            var options = GenerateDbOptions();
 
             using (var db = new ApplicationContext(options))
             {
-                // ...
+                var tableNames = db.Model.GetEntityTypes().Select(t => t.GetTableName()).Distinct().ToList();
+
+                Console.WriteLine("List of tables created by Code First approach by Entity Framework Core 7:\n");
+                foreach (var tableName in tableNames)
+                {
+                    Console.WriteLine($"  {tableName}");
+                }
             }
         }
 
-        private static DbContextOptions<ApplicationContext> GetDbOptions()
+        // Generate options that will be used in every DbContext
+        private static DbContextOptions<ApplicationContext> GenerateDbOptions()
         {
             string jsonSettingsFile = "appsettings.json";
 
@@ -28,7 +35,7 @@ namespace EFCore_CodeFirst
 
             if (connectionString is null)
             {
-                throw new Exception("connection string is null");
+                throw new Exception("connectionString is null");
             }
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();

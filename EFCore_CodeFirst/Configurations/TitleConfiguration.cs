@@ -8,7 +8,17 @@ namespace EFCore_CodeFirst.Configurations
     {
         public void Configure(EntityTypeBuilder<Title> builder)
         {
-            throw new NotImplementedException();
+            // TABLE NAME
+            builder.ToTable("Title");
+
+            // PRIMARY KEY
+            builder.HasKey(t => t.TitleId);
+
+            // NOT NULL
+            builder.Property(t => t.Name).IsRequired();
+
+            // CONSTRAINTS
+            builder.Property(t => t.Name).HasMaxLength(50);
         }
     }
 }

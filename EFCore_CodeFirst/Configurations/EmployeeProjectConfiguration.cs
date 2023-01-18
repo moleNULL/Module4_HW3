@@ -8,7 +8,14 @@ namespace EFCore_CodeFirst.Configurations
     {
         public void Configure(EntityTypeBuilder<EmployeeProject> builder)
         {
-            throw new NotImplementedException();
+            // TABLE NAME
+            builder.ToTable("EmployeeProject");
+
+            // PRIMARY KEY
+            builder.HasKey(ep => ep.EmployeeProjectId);
+
+            // CONSTRAINTS
+            builder.Property(ep => ep.Rate).HasColumnType("money");
         }
     }
 }

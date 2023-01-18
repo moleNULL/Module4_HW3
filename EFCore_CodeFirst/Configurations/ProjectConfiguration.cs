@@ -8,7 +8,35 @@ namespace EFCore_CodeFirst.Configurations
     {
         public void Configure(EntityTypeBuilder<Project> builder)
         {
-            throw new NotImplementedException();
+            // TABLE NAME
+            builder.ToTable("Project");
+
+            // PRIMARY KEY
+            builder.HasKey(p => p.ProjectId);
+
+            // NOT NULL
+            builder.Property(p => p.Name).IsRequired();
+
+            // CONSTRAINTS
+            builder.Property(p => p.Name).HasMaxLength(50);
+            builder.Property(p => p.Budget).HasColumnType("money");
+
+            // FOREIGN KEYS and relationships
+
+            // many to many
+            builder.HasMany(p => p.Employees)
+                .WithMany(e => e.Projects)
+                .UsingEntity<EmployeeProject>(
+                    j => j
+                        .HasOne(ep => ep.Employee)
+                        .WithMany(e => e.EmployeeProjects)
+                        .HasForeignKey(ep => ep.EmployeeId)
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j => j
+                    .HasOne(ep => ep.Project)
+                    .WithMany(p => p.EmployeeProjects)
+                    .HasForeignKey(ep => ep.ProjectId)
+                    .OnDelete(DeleteBehavior.Cascade));
         }
     }
 }

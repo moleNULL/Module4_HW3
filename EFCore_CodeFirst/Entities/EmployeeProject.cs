@@ -3,8 +3,8 @@
     public class EmployeeProject
     {
         public int EmployeeProjectId { get; set; }
-        public decimal Rate { get; set; } // money
-        public DateTime StartedTime { get; set; } // datetime2(7)
+        public decimal Rate { get; set; }
+        public DateTime StartedTime { get; set; }
 
         public int EmployeeId { get; set; }
         public Employee? Employee { get; set; }
